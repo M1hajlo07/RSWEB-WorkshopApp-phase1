@@ -1,0 +1,71 @@
+﻿@model WorkshopApp.Models.Enrollment
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Детали</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+       
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Student)</dt>
+        <dd class="col-sm-10">@Model.Student.FullName</dd>
+
+        
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Course)</dt>
+        <dd class="col-sm-10">@Model.Course.Title</dd>
+
+        
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Semester)</dt>
+        <dd class="col-sm-10">@Model.Semester</dd>
+
+        
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Year)</dt>
+        <dd class="col-sm-10">@Model.Year</dd>
+
+       
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Grade)</dt>
+        <dd class="col-sm-10">@Model.Grade</dd>
+
+        
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ProjectUrl)</dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.ProjectUrl))
+            {
+                <a href="@("/projects/" + Model.ProjectUrl)" target="_blank">@Model.ProjectUrl</a>
+            }
+        </dd>
+
+        
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.SeminalUrl)</dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.SeminalUrl))
+            {
+                <a href="@("/projects/" + Model.SeminalUrl)" target="_blank">@Model.SeminalUrl</a>
+            }
+        </dd>
+
+       
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ExamPoints)</dt>
+        <dd class="col-sm-10">@Model.ExamPoints</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.SeminalPoints)</dt>
+        <dd class="col-sm-10">@Model.SeminalPoints</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ProjectPoints)</dt>
+        <dd class="col-sm-10">@Model.ProjectPoints</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.AdditionalPoints)</dt>
+        <dd class="col-sm-10">@Model.AdditionalPoints</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.FinishDate)</dt>
+        <dd class="col-sm-10">@Model.FinishDate.ToString("dd.MM.yyyy")</dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Промени</a> |
+    <a asp-action="Index">Назад кон листата</a>
+</div>

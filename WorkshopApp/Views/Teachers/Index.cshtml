@@ -1,0 +1,119 @@
+﻿@model WorkshopApp.ViewModels.TeacherFilterViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    td,th{
+        width:auto;
+    }
+</style>
+
+<h1>Професори</h1>
+@* TempData messages *@
+@if (TempData["ErrorMessage"] is string errorMsg)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @errorMsg
+        <a href="@Url.Action("Index", "Teachers")" class="close" style="text-decoration:none; color:black; float:right;">×</a>
+    </div>
+}
+
+@if (TempData["SuccessMessage"] is string successMsg)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @successMsg
+        <a href="@Url.Action("Index", "Teachers")" class="close" style="text-decoration:none; color:black; float:right;">×</a>
+    </div>
+}
+
+
+<p>
+    <a asp-action="Create">Додади професор</a>
+</p>
+
+<form asp-controller="Teachers" asp-action="Index" method="get">
+    <p>
+        Име и презиме: <input type="text" asp-for="SearchFullName" />
+        Академски ранг: <select asp-for="SearchRank" asp-items="Model.Ranks">
+            <option value="">Сите</option>
+        </select>
+        Степен на образование: <select asp-for="SearchDegree" asp-items="Model.Degrees">
+
+            <option value="">Сите</option>
+        </select>
+        <input type="submit" value="Филтер" />
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Teachers[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Teachers[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Teachers[0].Degree)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Teachers[0].AcademicRank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Teachers[0].OfficeNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Teachers[0].HireDate)
+            </th>
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Teachers) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Degree)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AcademicRank)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OfficeNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HireDate)
+            </td>
+           
+            <td>
+                <a asp-action="Teachercourses" asp-route-id="@item.Id">Прeдмети</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Промени</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Детали</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Избриши</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@section Scripts {
+    <script>
+        
+        window.setTimeout(function () {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.classList.remove('show'); 
+                alert.classList.add('hide');    
+            });
+        }, 5000); 
+    </script>
+}
+
+

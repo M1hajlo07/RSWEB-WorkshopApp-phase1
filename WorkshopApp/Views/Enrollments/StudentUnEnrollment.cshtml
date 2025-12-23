@@ -1,0 +1,88 @@
+﻿@model WorkshopApp.ViewModels.UnEnrollStudents
+@{
+    ViewData["Title"] = "Отпиши студенти";
+}
+
+<h2>Отпиши студенти</h2>
+<hr />
+
+
+<form method="get" id="filterForm">
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label>Предмет:</label>
+            <select asp-for="CourseId" asp-items="Model.CoursesList" id="CourseId" class="form-control">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label>Година:</label>
+            <select asp-for="Year" asp-items="Model.Years" id="Year" class="form-control">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label>Семестар:</label>
+            <select asp-for="Semester" asp-items="Model.Semesters" id="Semester" class="form-control">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+</form>
+
+<hr />
+
+
+<form asp-action="StudentUnEnrollment" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="form-group mb-3">
+        <label asp-for="SelectedEnrollments">Студенти</label>
+        <select asp-for="SelectedEnrollments" asp-items="Model.Enrollments" class="form-control js-students-select" multiple="multiple" style="width:100%;">
+        </select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="FinishDate">Дата на отпишување</label>
+        <input asp-for="FinishDate" class="form-control" />
+        <span asp-validation-for="FinishDate" class="text-danger"></span>
+    </div>
+
+    <button type="submit" id="btnUnenroll" class="btn btn-danger" disabled>Отпиши избрани</button>
+    <a asp-action="Index" class="btn btn-secondary">Назад кон студентите</a>
+</form>
+
+@section Scripts {
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            
+            $("#CourseId, #Year, #Semester").select2({ width: '100%' });
+            $(".js-students-select").select2({
+                placeholder: "Избери студенти",
+                width: '100%'
+            });
+
+            
+            $('#CourseId,#Year,#Semester').change(function () {
+                $('#filterForm').submit();
+            });
+
+           
+            function toggleUnenrollButton() {
+                var anyStudentSelected = $(".js-students-select").val().length > 0;
+                var courseSelected = $("#CourseId").val() !== "" && $("#CourseId").val() !== null;
+                $("#btnUnenroll").prop("disabled", !(anyStudentSelected && courseSelected));
+            }
+
+            
+            toggleUnenrollButton();
+            $(".js-students-select, #CourseId").on("change", toggleUnenrollButton);
+        });
+    </script>
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
